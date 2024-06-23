@@ -1,3 +1,5 @@
 src/data/
 src/extracted_data
-src/models
+src/final_data
+src/meta_data.csv
+__pycache__

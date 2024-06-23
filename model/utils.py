@@ -21,6 +21,9 @@ def load_images(image_folder, metadata, IMG_HEIGHT, IMG_WIDTH):
 
 # TRAINING PLOT
 class TrainingPlot(keras.callbacks.Callback):
+    def __init__(self, MODEL_VERSION):
+        self.model_version = MODEL_VERSION
+
     def on_train_begin(self, logs={}):
         self.losses = []
         self.acc = []
@@ -58,5 +61,5 @@ class TrainingPlot(keras.callbacks.Callback):
         ax[1].legend()
 
         # Save the figure
-        plt.savefig(f"../src/models/training_graphs/training_v{MODEL_VERSION}.png")
+        plt.savefig(f"../src/models/training_graphs/training_v{self.model_version}.png")
         plt.close()
