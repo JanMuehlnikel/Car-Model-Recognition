@@ -2,4 +2,5 @@ src/data/
 src/extracted_data
 src/final_data
 src/meta_data.csv
+*.keras
 __pycache__
