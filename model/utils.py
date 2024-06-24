@@ -6,6 +6,14 @@ import numpy as np
 from tqdm import tqdm
 import os
 
+# IMAGE TO ARRAY
+def image_array(img_path, IMG_HEIGHT, IMG_WIDTH):
+    if os.path.exists(img_path):
+        img = load_img(img_path, target_size=(IMG_HEIGHT, IMG_WIDTH))
+        img_array = img_to_array(img)
+
+        return img_array
+
 # LOAD IMAGES
 def load_images(image_folder, metadata, IMG_HEIGHT, IMG_WIDTH):
     images = []
@@ -13,16 +21,25 @@ def load_images(image_folder, metadata, IMG_HEIGHT, IMG_WIDTH):
     for index, row in tqdm(metadata.iterrows(), desc="Processing", total=len(metadata)):
         img_path = os.path.join(image_folder, row['Filename'])
         if os.path.exists(img_path):
-            img = load_img(img_path, target_size=(IMG_HEIGHT, IMG_WIDTH))
-            img_array = img_to_array(img)
+            img_array = image_array(img_path, IMG_HEIGHT, IMG_WIDTH)
             images.append(img_array)
             labels.append(row['Model'])
     return np.array(images), np.array(labels)
 
+# PREPROCESS SINGLE IMAGE
+def preprocess(img_path, IMG_HEIGHT, IMG_WIDTH):
+    img_array = image_array(img_path, IMG_HEIGHT, IMG_WIDTH)
+    img_array = np.expand_dims(img_array, axis=0)
+    np_array = np.array(img_array)
+    normalized_array = np_array / 255
+
+    return normalized_array
+
 # TRAINING PLOT
 class TrainingPlot(keras.callbacks.Callback):
-    def __init__(self, MODEL_VERSION):
+    def __init__(self, MODEL_VERSION, DEST_FOLDER):
         self.model_version = MODEL_VERSION
+        self.dest_folder = DEST_FOLDER
 
     def on_train_begin(self, logs={}):
         self.losses = []
@@ -61,5 +78,5 @@ class TrainingPlot(keras.callbacks.Callback):
         ax[1].legend()
 
         # Save the figure
-        plt.savefig(f"../src/models/training_graphs/training_v{self.model_version}.png")
+        plt.savefig(f"{self.dest_folder}/training_v{self.model_version}.png")
         plt.close()
