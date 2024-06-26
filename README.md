@@ -20,7 +20,7 @@
 We chose to use the **DVM Car Dataset** (https://deepvisualmarketing.github.io/) to train our models. This dataset contains a good number of images for various car manufacturers and it's models. 
 
 BMW
-  ╠ 1 Series
+  ╠ 1 Series \n
   ╠ 2 Series
   ╠ 2 Series Active Tourer
   ╠ 4 Series Gran Coupe
