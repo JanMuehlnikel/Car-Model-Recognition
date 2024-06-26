@@ -1,4 +1,5 @@
 # Car Model Recognition
+![Banner](.src/header.jpg)
 
 # Table of Contents
 
