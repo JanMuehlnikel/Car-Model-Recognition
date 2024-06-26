@@ -9,6 +9,7 @@ struct CarModelRecognitionView: View {
     @State private var isLoading: Bool = false
     @State private var showResultView: Bool = false
     @State private var savedImages: [UIImage] = []
+    @ObservedObject var currentPrediction = CarModelPrediction()
 
     var body: some View {
         TabView {
@@ -85,6 +86,8 @@ struct CarModelRecognitionView: View {
                             switch result {
                             case .success(let prediction):
                                 predictedClass = prediction
+                                currentPrediction.predictedClass = prediction
+                                currentPrediction.selectedImage = selectedImage
                                 showResultView = true  // Zeige die Ergebnisseite
                                 saveImageLocally(selectedImage)
                                 loadSavedImages()
@@ -121,13 +124,12 @@ struct CarModelRecognitionView: View {
                 Spacer()
             }
             .padding()
-            .background(
-                NavigationLink(
-                    destination: ResultView(prediction: predictedClass, image: selectedImage ?? UIImage()),
-                    isActive: $showResultView,
-                    label: { EmptyView() }
-                )
-            )
+            .sheet(isPresented: $showImagePicker, content: {
+                ImagePicker(selectedImage: $selectedImage, imageName: $imageName, onImagePicked: { image in
+                    self.showUploadButton = true
+                    self.predictedClass = ""
+                })
+            })
             .tabItem {
                 Image(systemName: "car.fill")
                 Text("Home")
@@ -144,20 +146,20 @@ struct CarModelRecognitionView: View {
                     Image(systemName: "photo.fill")
                     Text("Gallery")
                 }
+            
+            ResultView(prediction: currentPrediction.predictedClass, image: currentPrediction.selectedImage ?? UIImage())
+                .tabItem {
+                    Image(systemName: "info.circle.fill")
+                    Text("Results")
+                }
         }
-        .sheet(isPresented: $showImagePicker, content: {
-            ImagePicker(selectedImage: $selectedImage, imageName: $imageName, onImagePicked: { image in
-                self.showUploadButton = true
-                self.predictedClass = ""
-            })
-        })
         .onAppear {
             loadSavedImages()
         }
     }
 
     func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
-        let url = URL(string: "https://03e9-134-155-230-160.ngrok-free.app/predict")! // Ersetzen Sie dies durch Ihre ngrok-URL
+        let url = URL(string: "https://845f-134-155-230-160.ngrok-free.app/predict")! // Ersetzen Sie dies durch Ihre ngrok-URL
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
