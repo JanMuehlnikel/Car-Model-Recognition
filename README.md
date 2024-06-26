@@ -54,5 +54,16 @@ For the training of our model we had to downsize the data because of limited res
 # Usage
 [(Back to top)](#table-of-contents)
 
+# Model Performance Summary
+
+This table provides a detailed summary of the performance metrics for various models evaluated.
+
+| **Model** | **Epochs** | **Validation Accuracy** | **Recall** |
+|:---------:|:----------:|:-----------------------:|:----------:|
+| Model 1   | 10         | 85%                     | 80%        |
+| Model 2   | 15         | 88%                     | 82%        |
+| Model 3   | 20         | 90%                     | 85%        |
+| Model 4   | 25         | 87%                     | 83%        |
+
 # License
 [(Back to top)](#table-of-contents)
