@@ -12,9 +12,9 @@ model = tf.keras.models.load_model('/Users/lucamohr/GitHub/Car-Model-Recognition
 
 # Hilfsfunktion zur Bildvorverarbeitung
 def preprocess_image(image, target_size):
-    image = image.resize(target_size)  # Skalieren des Bildes auf target_size
-    image = np.array(image) / 255.0  # Normalisieren der Bilddaten
-    image = np.expand_dims(image, axis=0)  # Hinzufügen einer Batch-Dimension: (1, 128, 128, 3)
+    image = image.resize(target_size)
+    image = np.array(image) / 255.0
+    image = np.expand_dims(image, axis=0)
     return image
 
 @app.route('/predict', methods=['POST'])
@@ -28,19 +28,15 @@ def predict():
 
     try:
         image = Image.open(io.BytesIO(file.read()))
-        processed_image = preprocess_image(image, target_size=(128, 128))  # Bildgröße anpassen
+        processed_image = preprocess_image(image, target_size=(128, 128))
+        prediction = model.predict(processed_image)
+        predicted_class = int(np.argmax(prediction, axis=1)[0])
 
-        print(f"Processed image shape: {processed_image.shape}")  # Debug-Ausgabe zur Überprüfung der Bildform
-
-        prediction = model.predict(processed_image).tolist()
-
-        response = jsonify({'prediction': prediction})
+        response = jsonify({'prediction': predicted_class})
         response.headers.add('Content-Type', 'application/json')
-        print(response.get_data(as_text=True))  # Debug-Ausgabe zur Überprüfung der Antwort
+        print(response.get_data(as_text=True))  # Debug-Ausdruck zur Überprüfung der Antwort
         return response
     except Exception as e:
-        # Debug-Ausgabe zur Überprüfung des Fehlers
-        print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

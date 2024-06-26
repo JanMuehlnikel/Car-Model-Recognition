@@ -13,6 +13,7 @@ struct CarModelRecognitionView: View {
     var body: some View {
         TabView {
             VStack(spacing: 20) {
+                // Header
                 VStack(spacing: 10) {
                     Text("Car Model Recognition")
                         .font(.largeTitle)
@@ -21,6 +22,7 @@ struct CarModelRecognitionView: View {
                 }
                 .padding(.top, 20)
 
+                // Image Display
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
@@ -49,6 +51,7 @@ struct CarModelRecognitionView: View {
                     .transition(.opacity)
                 }
 
+                // Choose Image Button
                 Button(action: {
                     self.showImagePicker = true
                 }) {
@@ -66,21 +69,23 @@ struct CarModelRecognitionView: View {
                 }
                 .padding(.horizontal)
 
+                // Hinweistext
                 Text("Only Porsche and Mercedes car models can be recognized.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.bottom, 10)
 
+                // Upload Image Button
                 if showUploadButton {
                     Button(action: {
                         guard let selectedImage = selectedImage else { return }
                         isLoading = true
-                        uploadImage(image: selectedImage) { result in
+                        uploadImage(selectedImage) { result in
                             isLoading = false
                             switch result {
                             case .success(let prediction):
                                 predictedClass = prediction
-                                showResultView = true
+                                showResultView = true  // Zeige die Ergebnisseite
                                 saveImageLocally(selectedImage)
                                 loadSavedImages()
                             case .failure(let error):
@@ -118,7 +123,7 @@ struct CarModelRecognitionView: View {
             .padding()
             .background(
                 NavigationLink(
-                    destination: ResultView(prediction: predictedClass),
+                    destination: ResultView(prediction: predictedClass, image: selectedImage ?? UIImage()),
                     isActive: $showResultView,
                     label: { EmptyView() }
                 )
@@ -127,13 +132,13 @@ struct CarModelRecognitionView: View {
                 Image(systemName: "car.fill")
                 Text("Home")
             }
-            
+
             InformationView()
                 .tabItem {
                     Image(systemName: "info.circle.fill")
                     Text("Information")
                 }
-            
+
             GalleryView(savedImages: $savedImages)
                 .tabItem {
                     Image(systemName: "photo.fill")
@@ -151,8 +156,8 @@ struct CarModelRecognitionView: View {
         }
     }
 
-    func uploadImage(image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
-        let url = URL(string: "https://06f3-134-155-232-226.ngrok-free.app/predict")! // Aktualisierte ngrok-URL hier
+    func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
+        let url = URL(string: "https://ed0c-134-155-230-160.ngrok-free.app/predict")! // Ersetzen Sie dies durch Ihre ngrok-URL
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -168,10 +173,6 @@ struct CarModelRecognitionView: View {
             data.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
             data.append(imageData)
             data.append("\r\n".data(using: .utf8)!)
-        } else {
-            print("Error: Could not create JPEG data from image")
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not create JPEG data from image"])))
-            return
         }
         
         data.append("--\(boundary)--\r\n".data(using: .utf8)!)
@@ -190,38 +191,13 @@ struct CarModelRecognitionView: View {
             }
             
             do {
-                guard let responseString = String(data: responseData, encoding: .utf8) else {
-                    print("Error: Could not convert response data to string")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not convert response data to string"])))
-                    return
-                }
-                print("Response String: \(responseString)")  // Debug-Ausdruck zur Überprüfung der Antwort als String
-                
-                if responseString.contains("<html") {
-                    print("Error: Received HTML response instead of JSON")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Received HTML response instead of JSON"])))
-                    return
-                }
-                
-                guard let jsonData = responseString.data(using: .utf8) else {
-                    print("Error: Could not convert response string to data")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Could not convert response string to data"])))
-                    return
-                }
-                
-                if let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                if let json = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
+                   let prediction = json["prediction"] as? Int {
                     print("Response JSON: \(json)")  // Debug-Ausdruck zur Überprüfung der JSON-Antwort
-                    if let predictionArray = json["prediction"] as? [[Double]] {
-                        let predictionString = predictionArray.map { String(describing: $0) }.joined(separator: ", ")
-                        print("Prediction: \(predictionString)")
-                        completion(.success(predictionString))
-                    } else {
-                        print("JSON deserialization failed: Invalid structure")
-                        completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON structure"])))
-                    }
+                    completion(.success("\(prediction)"))  // Geben Sie die Vorhersage als String zurück
                 } else {
                     print("JSON deserialization failed")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON structure"])))
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "JSON deserialization failed"])))
                 }
             } catch {
                 print("JSON deserialization error: \(error)")
@@ -232,18 +208,10 @@ struct CarModelRecognitionView: View {
         task.resume()
     }
 
-
     func saveImageLocally(_ image: UIImage) {
-        guard let data = image.jpegData(compressionQuality: 0.8) else {
-            print("Error: Could not create JPEG data from image to save locally")
-            return
-        }
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
         let filename = getDocumentsDirectory().appendingPathComponent(UUID().uuidString + ".jpg")
-        do {
-            try data.write(to: filename)
-        } catch {
-            print("Error: Could not save image locally - \(error)")
-        }
+        try? data.write(to: filename)
     }
 
     func getDocumentsDirectory() -> URL {
