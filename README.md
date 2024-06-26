@@ -7,7 +7,7 @@
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Development](#development)
+- [Model Performance](#modelperformance)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -54,8 +54,7 @@ For the training of our model we had to downsize the data because of limited res
 # Usage
 [(Back to top)](#table-of-contents)
 
-# Model Performance Summary
-
+# Model Performance
 This table provides a detailed summary of the performance metrics for various models evaluated.
 
 | **Model** | **Epochs** | **Validation Accuracy** | **Recall** |
