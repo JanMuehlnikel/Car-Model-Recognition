@@ -19,7 +19,7 @@
 # Data
 We chose to use the **DVM Car Dataset** (https://deepvisualmarketing.github.io/) to train our models. This dataset contains a good number of images for various car manufacturers and it's models. 
 
-BMW  
+**BMW**  
   ╠ 1 Series  
   ╠ 2 Series  
   ╠ 2 Series Active Tourer  
@@ -28,20 +28,20 @@ BMW
   ╠ M4  
   ╠ X3  
   ╠ X5  
-  ╚ X6  s
-Mercedes-Benz
-  -> A Class
-  -> C Class
-  -> E Class
-Porsche
-  -> 911
-  -> Macan
-Volkswagen
-  -> Golf
-  -> Passat
-  -> Scirocco
-  -> Touareg
-  -> up!
+  ╚ X6  
+**Mercedes-Benz**  
+  ╠ A Class  
+  ╠ C Class  
+  ╚ E Class  
+**Porsche**  
+  ╠ 911  
+  ╚ Macan  
+**Volkswagen**  
+  ╠ Golf  
+  ╠ Passat  
+  ╠ Scirocco  
+  ╠ Touareg  
+  ╚ up!  
 
 (Jingming Huang, Bowei Chen, Lan Luo, Shigang Yue, and Iadh Ounis. (2022). "DVM-CAR: A large-scale automotive dataset for visual marketing research and applications". In Proceedings of IEEE International Conference on Big Data, pp.4130–4137)
 
