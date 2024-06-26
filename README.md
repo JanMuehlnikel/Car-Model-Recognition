@@ -4,7 +4,7 @@
 ## ✍🏼 Contributors
 ![avatar](https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96066381?v=4&h=100&w=100&fit=cover&mask=circle&maxage=7d)  ![avatar](https://images.weserv.nl/?url=avatars.githubusercontent.com/u/96065475?v=4&h=100&w=100&fit=cover&mask=circle&maxage=7d)
 
-[Jan Mühlnikel](https://github.com/JanMuehlnikel) [Luca Mohr](https://github.com/Luca2732)
+[Jan Mühlnikel](https://github.com/JanMuehlnikel)    [Luca Mohr](https://github.com/Luca2732)
 
 # Table of Contents
 
