@@ -1,0 +1,28 @@
+Classification Report:
+                        precision    recall  f1-score   support
+
+              1 Series       0.93      0.96      0.94       737
+              2 Series       0.94      0.93      0.94       657
+2 Series Active Tourer       0.94      0.95      0.94       402
+   4 Series Gran Coupe       0.78      0.90      0.84       409
+              5 Series       0.91      0.88      0.89       518
+                   911       0.98      0.97      0.97       722
+               A Class       0.95      0.93      0.94       446
+               C Class       0.73      0.85      0.79       420
+               E Class       0.87      0.72      0.79       488
+                  Golf       0.96      0.95      0.96      1041
+                    M4       0.95      0.86      0.90       416
+                 Macan       0.96      0.96      0.96       535
+                Passat       0.96      0.96      0.96      1072
+              Scirocco       0.93      0.94      0.94       418
+               Touareg       0.95      0.96      0.95       438
+                    X3       0.84      0.95      0.89       479
+                    X5       0.95      0.92      0.94      1133
+                    X6       0.93      0.90      0.91       442
+                   up!       0.96      0.97      0.97       656
+
+              accuracy                           0.93     11429
+             macro avg       0.92      0.92      0.92     11429
+          weighted avg       0.93      0.93      0.93     11429
+
+Accuracy: 0.9257152676582336
