@@ -18,6 +18,7 @@
 
 # Data
 We chose to use the **DVM Car Dataset** (https://deepvisualmarketing.github.io/) to train our models. This dataset contains a good number of images for various car manufacturers and it's models. 
+For the training of our model we had to downsize the data because of limited ressources and training time. Therefore we choose to select four of the most popular germany car manufacturers and selected the models represented the most through images in the dataset.
 
 **BMW**  
   ╠ 1 Series  
