@@ -8,7 +8,7 @@
 
   
 
-[Niklas Scholz](https://github.com/nklsdhbw?tab=repositories) [Luca Mohr](https://github.com/Luca2732) [Christian Schmid](https://github.com/chris017) [Jan Mühlnikel](https://github.com/JanMuehlnikel)
+[Jan Mühlnikel](https://github.com/JanMuehlnikel) [Luca Mohr](https://github.com/Luca2732)
 
 # Table of Contents
 
