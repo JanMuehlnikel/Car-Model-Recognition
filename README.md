@@ -17,7 +17,7 @@
 [Jan Mühlnikel](https://github.com/JanMuehlnikel)    [Luca Mohr](https://github.com/Luca2732)
 
 # Data
-We chose to use the DVM Car Dataset (https://deepvisualmarketing.github.io/) to train our models. This dataset contains a good number of images for various car manufacturers and it' models. 
+We chose to use the **DVM Car Dataset** (https://deepvisualmarketing.github.io/) to train our models. This dataset contains a good number of images for various car manufacturers and it's models. 
 
 (Jingming Huang, Bowei Chen, Lan Luo, Shigang Yue, and Iadh Ounis. (2022). "DVM-CAR: A large-scale automotive dataset for visual marketing research and applications". In Proceedings of IEEE International Conference on Big Data, pp.4130–4137)
 
