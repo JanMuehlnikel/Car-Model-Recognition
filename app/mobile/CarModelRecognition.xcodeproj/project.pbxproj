@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14BDC1A82C2C669700199CB7 /* CarModelPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BDC1A72C2C669700199CB7 /* CarModelPrediction.swift */; };
+		14BDC1AA2C2C677300199CB7 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BDC1A92C2C677300199CB7 /* ResultsView.swift */; };
 		14E2A1652C2B0AE500952E1B /* CarModelRecognitionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E2A1642C2B0AE500952E1B /* CarModelRecognitionApp.swift */; };
 		14E2A1672C2B0AE500952E1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E2A1662C2B0AE500952E1B /* ContentView.swift */; };
 		14E2A1692C2B0AE700952E1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14E2A1682C2B0AE700952E1B /* Assets.xcassets */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14BDC1A72C2C669700199CB7 /* CarModelPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarModelPrediction.swift; sourceTree = "<group>"; };
+		14BDC1A92C2C677300199CB7 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		14E2A1612C2B0AE500952E1B /* CarModelRecognition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarModelRecognition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14E2A1642C2B0AE500952E1B /* CarModelRecognitionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarModelRecognitionApp.swift; sourceTree = "<group>"; };
 		14E2A1662C2B0AE500952E1B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,7 +118,9 @@
 				14E2A1662C2B0AE500952E1B /* ContentView.swift */,
 				14E2A19C2C2B0C2C00952E1B /* FeedbackVIew.swift */,
 				14E2A18E2C2B0B6B00952E1B /* CarModelRecognitionView.swift */,
+				14BDC1A72C2C669700199CB7 /* CarModelPrediction.swift */,
 				14E2A1902C2B0B7A00952E1B /* ResultView.swift */,
+				14BDC1A92C2C677300199CB7 /* ResultsView.swift */,
 				14E2A1922C2B0B8700952E1B /* HomeView.swift */,
 				14E2A1942C2B0B9500952E1B /* InformationVIew.swift */,
 				14E2A1962C2B0BA600952E1B /* GalleryView.swift */,
@@ -282,7 +288,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				14E2A1972C2B0BA600952E1B /* GalleryView.swift in Sources */,
+				14BDC1AA2C2C677300199CB7 /* ResultsView.swift in Sources */,
 				14E2A1672C2B0AE500952E1B /* ContentView.swift in Sources */,
+				14BDC1A82C2C669700199CB7 /* CarModelPrediction.swift in Sources */,
 				14E2A1912C2B0B7A00952E1B /* ResultView.swift in Sources */,
 				14E2A18F2C2B0B6B00952E1B /* CarModelRecognitionView.swift in Sources */,
 				14E2A1932C2B0B8700952E1B /* HomeView.swift in Sources */,
