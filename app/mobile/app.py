@@ -1,21 +1,20 @@
+import os
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import tensorflow as tf
 from PIL import Image
 import io
 import numpy as np
 
 app = Flask(__name__)
-CORS(app)
 
 # Laden Sie Ihr Modell
-model = tf.keras.models.load_model('/Users/lucamohr/GitHub/Car-Model-Recognition/src/models/model_v1.h5')
+model = tf.keras.models.load_model('/Users/lucamohr/GitHub/Car-Model-Recognition/src/models/cnn/model_v1.h5')
 
 # Hilfsfunktion zur Bildvorverarbeitung
 def preprocess_image(image, target_size):
-    image = image.resize(target_size)
-    image = np.array(image) / 255.0
-    image = np.expand_dims(image, axis=0)
+    image = image.resize(target_size)  # Skalieren des Bildes auf target_size
+    image = np.array(image) / 255.0  # Normalisieren der Bilddaten
+    image = np.expand_dims(image, axis=0)  # Hinzufügen einer Batch-Dimension: (1, 128, 128, 3)
     return image
 
 @app.route('/predict', methods=['POST'])
@@ -28,16 +27,22 @@ def predict():
         return jsonify({'error': 'No file selected'}), 400
 
     try:
-        image = Image.open(io.BytesIO(file.read())).convert('RGB')
-        processed_image = preprocess_image(image, target_size=(224, 224))
+        image = Image.open(io.BytesIO(file.read()))
+        processed_image = preprocess_image(image, target_size=(128, 128))  # Bildgröße anpassen
+
+        print(f"Processed image shape: {processed_image.shape}")  # Debug-Ausgabe zur Überprüfung der Bildform
+
         prediction = model.predict(processed_image).tolist()
 
-        # Umwandeln der Vorhersage in eine lesbare Form
-        predicted_class = np.argmax(prediction[0])
-
-        return jsonify({'prediction': str(predicted_class)})
+        response = jsonify({'prediction': prediction})
+        response.headers.add('Content-Type', 'application/json')
+        print(response.get_data(as_text=True))  # Debug-Ausgabe zur Überprüfung der Antwort
+        return response
     except Exception as e:
+        # Debug-Ausgabe zur Überprüfung des Fehlers
+        print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
