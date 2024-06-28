@@ -9,21 +9,56 @@ struct CarModelRecognitionView: View {
     @State private var isLoading: Bool = false
     @State private var showResultView: Bool = false
     @State private var savedImages: [UIImage] = []
-    @ObservedObject var currentPrediction = CarModelPrediction()
+
+    let labelMapping: [Int: String] = [
+        0: "BMW 1 Series", 1: "BMW 2 Series", 2: "BMW 2 Series Active Tourer", 3: "BMW 4 Series Gran Coupe", 4: "BMW 5 Series",
+        5: "Porsche 911", 6: "Mercedes-Benz A Class", 7: "Mercedes-Benz C Class", 8: "Mercedes-Benz E Class", 9: "VW Golf",
+        10: "BMW M4", 11: "Porsche Macan", 12: "VW Passat", 13: "VW Scirocco", 14: "VW Touareg",
+        15: "BMW X3", 16: "BMW X5", 17: "BMW X6", 18: "VW up!"
+    ]
 
     var body: some View {
         TabView {
-            VStack(spacing: 20) {
-                // Header
-                VStack(spacing: 10) {
-                    Text("Car Model Recognition")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.primary)
+            homeView
+                .tabItem {
+                    Image(systemName: "car.fill")
+                    Text("Home")
                 }
-                .padding(.top, 20)
 
-                // Image Display
+            resultView
+                .tabItem {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text("Results")
+                }
+            
+            GalleryView(savedImages: $savedImages)
+                .tabItem {
+                    Image(systemName: "photo.stack")
+                    Text("Gallery")
+                }
+            
+            InformationView()
+                .tabItem {
+                    Image(systemName: "info.circle.fill")
+                    Text("Information")
+                }
+        }
+        .sheet(isPresented: $showImagePicker, content: {
+            ImagePicker(selectedImage: $selectedImage, imageName: $imageName, onImagePicked: { image in
+                self.showUploadButton = true
+                self.predictedClass = ""
+            })
+        })
+        .onAppear {
+            loadSavedImages()
+        }
+    }
+
+    private var homeView: some View {
+        NavigationView {
+            VStack(spacing: 20) {
+                
+
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
@@ -38,7 +73,7 @@ struct CarModelRecognitionView: View {
                     VStack {
                         Image(systemName: "photo")
                             .resizable()
-                            .frame(width: 120, height: 100)
+                            .frame(width: 180, height: 150)
                             .foregroundColor(.gray)
                             .padding(.bottom, 20)
                         Text("No image selected")
@@ -57,7 +92,7 @@ struct CarModelRecognitionView: View {
                     self.showImagePicker = true
                 }) {
                     HStack {
-                        Image(systemName: "photo.on.rectangle.angled")
+                        Image(systemName: "photo.fill")
                         Text("Choose an Image")
                             .font(.headline)
                     }
@@ -71,7 +106,7 @@ struct CarModelRecognitionView: View {
                 .padding(.horizontal)
 
                 // Hinweistext
-                Text("Only Porsche and Mercedes car models can be recognized.")
+                Text("Please note that only car models from the brands Porsche, Mercedes, BMW, and Volkswagen can be recognized.")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.bottom, 10)
@@ -81,19 +116,22 @@ struct CarModelRecognitionView: View {
                     Button(action: {
                         guard let selectedImage = selectedImage else { return }
                         isLoading = true
-                        uploadImage(selectedImage) { result in
+                        uploadImage(image: selectedImage) { result in
                             isLoading = false
                             switch result {
                             case .success(let prediction):
-                                predictedClass = prediction
-                                currentPrediction.predictedClass = prediction
-                                currentPrediction.selectedImage = selectedImage
-                                showResultView = true  // Zeige die Ergebnisseite
-                                saveImageLocally(selectedImage)
-                                loadSavedImages()
+                                if let label = labelMapping[prediction] {
+                                    predictedClass = label
+                                } else {
+                                    predictedClass = "Unknown"
+                                }
                             case .failure(let error):
                                 print("Error: \(error)")
+                                predictedClass = "Error"
                             }
+                            showResultView = true
+                            saveImageLocally(selectedImage)
+                            loadSavedImages()
                         }
                     }) {
                         if isLoading {
@@ -124,51 +162,34 @@ struct CarModelRecognitionView: View {
                 Spacer()
             }
             .padding()
-            .sheet(isPresented: $showImagePicker, content: {
-                ImagePicker(selectedImage: $selectedImage, imageName: $imageName, onImagePicked: { image in
-                    self.showUploadButton = true
-                    self.predictedClass = ""
-                })
-            })
-            .tabItem {
-                Image(systemName: "car.fill")
-                Text("Home")
-            }
-
-            InformationView()
-                .tabItem {
-                    Image(systemName: "info.circle.fill")
-                    Text("Information")
-                }
-
-            GalleryView(savedImages: $savedImages)
-                .tabItem {
-                    Image(systemName: "photo.fill")
-                    Text("Gallery")
-                }
-            
-            ResultView(prediction: currentPrediction.predictedClass, image: currentPrediction.selectedImage ?? UIImage())
-                .tabItem {
-                    Image(systemName: "info.circle.fill")
-                    Text("Results")
-                }
-        }
-        .onAppear {
-            loadSavedImages()
+            .background(
+                NavigationLink(
+                    destination: ResultView(prediction: predictedClass, image: selectedImage ?? UIImage()),
+                    isActive: $showResultView,
+                    label: { EmptyView() }
+                )
+            )
+            .navigationTitle("Car Recognition")
         }
     }
 
-    func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
-        let url = URL(string: "https://845f-134-155-230-160.ngrok-free.app/predict")! // Ersetzen Sie dies durch Ihre ngrok-URL
+    private var resultView: some View {
+        NavigationView {
+            ResultView(prediction: predictedClass, image: selectedImage ?? UIImage())
+                .navigationTitle("Results")
+        }
+    }
+
+    func uploadImage(image: UIImage, completion: @escaping (Result<Int, Error>) -> Void) {
+        let url = URL(string: "https://9de3-134-155-231-255.ngrok-free.app/predict")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        
+
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
+
         var data = Data()
-        
-        // Bilddaten anhängen
+
         if let imageData = image.jpegData(compressionQuality: 1.0) {
             data.append("--\(boundary)\r\n".data(using: .utf8)!)
             data.append("Content-Disposition: form-data; name=\"file\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
@@ -176,37 +197,34 @@ struct CarModelRecognitionView: View {
             data.append(imageData)
             data.append("\r\n".data(using: .utf8)!)
         }
-        
+
         data.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
+
         let task = URLSession.shared.uploadTask(with: request, from: data) { responseData, response, error in
             if let error = error {
-                print("Upload Error: \(error)")
                 completion(.failure(error))
                 return
             }
-            
+
             guard let responseData = responseData else {
-                print("No response data")
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No response data"])))
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No response data"])
+                completion(.failure(error))
                 return
             }
-            
+
             do {
                 if let json = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any],
                    let prediction = json["prediction"] as? Int {
-                    print("Response JSON: \(json)")  // Debug-Ausdruck zur Überprüfung der JSON-Antwort
-                    completion(.success("\(prediction)"))  // Geben Sie die Vorhersage als String zurück
+                    completion(.success(prediction))
                 } else {
-                    print("JSON deserialization failed")
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "JSON deserialization failed"])))
+                    let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON structure"])
+                    completion(.failure(error))
                 }
             } catch {
-                print("JSON deserialization error: \(error)")
                 completion(.failure(error))
             }
         }
-        
+
         task.resume()
     }
 
