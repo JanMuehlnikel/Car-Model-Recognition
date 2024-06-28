@@ -48,6 +48,13 @@ For the training of our model we had to downsize the data because of limited res
 
 [(Back to top)](#table-of-contents)
 
+# iOS App
+![iOS1](/app/pictures/1.png)
+![iOS2](/app/pictures/2.png)
+![iOS3](/app/pictures/3.png)
+![iOS4](/app/pictures/4.png)
+![iOS5](/app/pictures/5.png)
+
 # Installation
 [(Back to top)](#table-of-contents)
 
