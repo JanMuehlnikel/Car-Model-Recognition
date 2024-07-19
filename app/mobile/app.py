@@ -8,7 +8,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Laden Sie Ihr Modell
-model = tf.keras.models.load_model('/Users/lucamohr/GitHub/Car-Model-Recognition/src/models/cnn/model_v1.h5')
+model = tf.keras.models.load_model('/Users/lucamohr/GitHub/Car-Model-Recognition/src/models/resNet50/_resNet50_2.1/model_v_resNet50_2.1.h5')
 
 # Hilfsfunktion zur Bildvorverarbeitung
 def preprocess_image(image, target_size):
