@@ -181,7 +181,7 @@ struct CarModelRecognitionView: View {
     }
 
     func uploadImage(image: UIImage, completion: @escaping (Result<Int, Error>) -> Void) {
-        let url = URL(string: "https://9de3-134-155-231-255.ngrok-free.app/predict")!
+        let url = URL(string: "https://acff-134-155-237-99.ngrok-free.app/predict")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
