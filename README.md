@@ -52,6 +52,9 @@ For the training of our model we had to downsize the data because of limited res
 ![iOS1](/app/pictures/7.png)
 The Car Model Recognition iOS app, developed using SwiftUI, provides users with the ability to identify car models from images. Users can select a car image, which is then uploaded to a Flask backend server equipped with a trained CNN model. The server processes the image and returns a prediction, which is mapped to the corresponding car model name and displayed in a user-friendly result page. The app features a feedback mechanism, allowing users to rate the prediction's accuracy with thumbs-up or thumbs-down icons. Additionally, the app includes a gallery for viewing previously uploaded images and an information page with details about the project, including a link to the GitHub repository. Navigation is facilitated through a TabView, ensuring smooth transitions between different sections of the app, providing a seamless and intuitive user experience.
 
+## Link to a demo
+https://share.icloud.com/photos/0dcMocLHE0rVaYwiFFGFffipQ
+
 [(Back to top)](#table-of-contents)
 
 # Installation
