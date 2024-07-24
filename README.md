@@ -1,5 +1,5 @@
 # Car Model Recognition
-<img src="docs/gif/RPReplay_Final1721412408.gif" alt="Successful Try" width="600" height="800">
+<img src="docs/gif/RPReplay_Final1721412408.gif" alt="Successful Try" width="300" height="800">
 <br>
 
 # Table of Contents
