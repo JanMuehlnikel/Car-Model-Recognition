@@ -1,5 +1,6 @@
 # Car Model Recognition
-![Banner](/src/header.jpg)
+<img src="/docs/RPReplay_Final1721412408.gif" alt="Successful Try" width="600" height="400">
+<br>
 
 # Table of Contents
 - [Contributors](#contributors)
