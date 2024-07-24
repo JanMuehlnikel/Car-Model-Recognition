@@ -1,4 +1,5 @@
 # Car Model Recognition
+![Banner](/src/Banner.png)
 
 # Table of Contents
 - [Contributors](#contributors)
